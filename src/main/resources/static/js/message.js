@@ -1,38 +1,26 @@
 function getInputMessage(){
     const text = document.getElementById("inputText");
     if(isMessage(text.value)){
-        userSendMessage(text.value);
+        addUserMessage(text.value);
         setTimeout(() => {
             text.value = "";
         }, 1);
     }
 }
 
-function userSendMessage(message) {
-    addUserMessage(message);
-    sendMessageToLM(message);
-}
-
 function addUserMessage(message){
-    const chatBox = document.getElementById("chatBox");
-    const msg = addMessage(toMessage(message), "user");
-    chatBox.appendChild(msg);
+    if(isMessage(message)){
+        addMessage(toMessage(message), "user");
+        sendMessageToLM(message);
+    }
 }
 
 function addBotMessage(model, message){
-    const chatBox = document.getElementById("chatBox");
-    const modelLogo = addModelLogo(model);
-    const msg = addMessage(toMessage(message), "bot");
-    const icon = addLikeIcon(model);
-
-    const messageElement = document.createElement("div");
-    messageElement.classList.add("botDiv");
-    messageElement.appendChild(modelLogo);
-    messageElement.appendChild(msg);
-
-    chatBox.appendChild(messageElement);
-    chatBox.appendChild(icon);
-    msgNumber++;
+    if(isMessage(message)){
+        addMessage(toMessage(message), "bot");
+        addLikeIcon(model);
+        msgNumber++;
+    }
 }
 
 function isMessage(message){
@@ -64,22 +52,36 @@ function toMessage(message) {
 }
 
 function addMessage(message, sender){
+    const chatBox = document.getElementById("chatBox");
     const messageElement = document.createElement("div");
     messageElement.classList.add(sender);
+    if(sender == "bot")
+        messageElement.setAttribute("id", "msg"+msgNumber);
     messageElement.innerHTML = message;
-    return messageElement;
+    chatBox.appendChild(messageElement);
 }
 
 async function sendMessageToLM(message) {
+    // let url = "http://localhost:8080/api/user/send/" + userEmail + "?msg=" + message;
+    // try{
+    //     const response = await fetch(url, {method: "GET"});
+    //     const responseMsg = await response.text();
+    //     console.log(responseMsg);
+    //     addBotMessage(responseMsg);
+    // }catch(err){
+    //     console.log("Failed: " + err);
+    // }
+
     let url = "http://localhost:" + port + "/api/user/send";
     let headers = {
         'Content-Type': 'application/json'
     }
     let body = {
         "email": userEmail,
-        "pwd": userPassword,
+        "password": userPassword,
         "message": message
     }
+    console.log("json: " + JSON.stringify(body));
 
     try{
         const response = await fetch(url, {
@@ -93,11 +95,3 @@ async function sendMessageToLM(message) {
     }
 }
 
-function getHistoryMessage(userMessage, botMessage) {
-    let len = userMessage.length;
-
-    for(let i = 0; i < len; i++){
-        addUserMessage(userMessage[i]);
-        addBotMessage(botMessage[i].model, botMessage[i].message);
-    }
-}
