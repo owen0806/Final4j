@@ -1,7 +1,6 @@
 package poateto.final4j.UseCases.Service;
 
-import poateto.final4j.Entity.Message.LMMessage;
-import poateto.final4j.Entity.User.*;
+import poateto.final4j.Entity.*;
 import poateto.final4j.Repository.InMemoryUserRepository;
 import poateto.final4j.Repository.UserRepository;
 import poateto.final4j.UseCases.Components.LanguageModelType;
