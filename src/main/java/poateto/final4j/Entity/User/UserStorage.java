@@ -9,8 +9,7 @@ import java.util.Map;
 
 import static poateto.final4j.UseCases.Components.LanguageModelType.*;
 
-public class UserStorage extends UserEntity {
-    private String name;
+public class UserStorage extends UserCreate {
     private List<String> sentMsg;
     private List<LMMessage> responsedMsg;
     private Map<String, Double> models;
@@ -20,8 +19,7 @@ public class UserStorage extends UserEntity {
         init();
     }
     public UserStorage(UserCreate user) {
-        super(user.getEmail(), user.getPwd());
-        this.name = user.getName();
+        super(user.getName(), user.getEmail(), user.getPwd());
         init();
     }
 
@@ -35,9 +33,6 @@ public class UserStorage extends UserEntity {
         models.put(GEMINI.name(), 1.0);
     }
 
-    public String getName() {
-        return name;
-    }
     public List<String> getSentMsg() {
         return sentMsg;
     }

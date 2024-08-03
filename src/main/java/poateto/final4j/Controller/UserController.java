@@ -2,6 +2,9 @@ package poateto.final4j.Controller;
 
 import org.springframework.web.bind.annotation.*;
 import poateto.final4j.Entity.Message.LMMessage;
+import poateto.final4j.Entity.Message.MessageEntity;
+import poateto.final4j.Entity.Message.Sender;
+import poateto.final4j.Entity.Message.UserMessage;
 import poateto.final4j.Entity.User.*;
 import poateto.final4j.UseCases.Service.UserService;
 import poateto.final4j.UseCases.Service.UserUseCase;

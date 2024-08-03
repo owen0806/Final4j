@@ -1,6 +1,7 @@
 package poateto.final4j.Entity.Message;
 
 public interface MessageDependency {
-    String getModel();
+    Sender getSender();
     String getMessage();
+    String getTime();
 }

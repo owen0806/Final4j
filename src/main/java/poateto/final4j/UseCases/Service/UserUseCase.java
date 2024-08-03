@@ -1,6 +1,7 @@
 package poateto.final4j.UseCases.Service;
 
 import poateto.final4j.Entity.Message.LMMessage;
+import poateto.final4j.Entity.Message.UserMessage;
 import poateto.final4j.Entity.User.*;
 
 import java.util.concurrent.ExecutionException;

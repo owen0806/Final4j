@@ -1,20 +1,29 @@
 package poateto.final4j.Entity.Message;
 
 
-import poateto.final4j.Entity.Message.MessageDependency;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MessageEntity implements MessageDependency {
-    private String model;
+    private Sender sender;
     private String message;
+    private String time;
+
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public MessageEntity() {}
-    public MessageEntity(String model, String message) {
-        this.model = model;
+    public MessageEntity(Sender sender, String message) {
+        this.sender = sender;
         this.message = message;
+        this.time = formatter.format(new Date());
+        System.out.printf("sender: %s, time: %s%n",
+                sender, getTime());
     }
 
     @Override
-    public String getModel() { return model; }
+    public Sender getSender() { return sender; }
     @Override
     public String getMessage() { return message; }
+    @Override
+    public String getTime() { return time; }
 }

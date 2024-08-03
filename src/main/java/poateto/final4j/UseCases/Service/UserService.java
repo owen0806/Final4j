@@ -1,6 +1,7 @@
 package poateto.final4j.UseCases.Service;
 
 import poateto.final4j.Entity.Message.LMMessage;
+import poateto.final4j.Entity.Message.UserMessage;
 import poateto.final4j.Entity.User.*;
 import poateto.final4j.Repository.InMemoryUserRepository;
 import poateto.final4j.Repository.UserRepository;
@@ -65,14 +66,14 @@ public class UserService implements UserUseCase {
 
     @Override
     public LMMessage sendMessage(UserMessage prompt) throws ExecutionException, InterruptedException {
-        if (!checkPwd(prompt.getEmail(), prompt.getPwd())) {
+        if (!checkPwd(prompt.getUser().getEmail(), prompt.getUser().getPwd())) {
             LMMessage error = new LMMessage();
             return error;
         }
-        repository.sendMessage(prompt.getEmail(), prompt.getMessage());
+        repository.sendMessage(prompt.getUser().getEmail(), prompt.getMessage());
 
         LanguageModelType selectModel;
-        Map<String, Double> allModels = repository.getUserByEmail(prompt.getEmail()).getModels();
+        Map<String, Double> allModels = repository.getUserByEmail(prompt.getUser().getEmail()).getModels();
 
         double sum = 0.0;
         for (Double weight : allModels.values()) {
@@ -90,7 +91,7 @@ public class UserService implements UserUseCase {
 
         String response = handler.sendMessage(selectModel, prompt.getMessage());
         LMMessage responseMsg = new LMMessage(selectModel.name(), response);
-        repository.responseMessage(prompt.getEmail(), responseMsg);
+        repository.responseMessage(prompt.getUser().getEmail(), responseMsg);
         LMMessage output = new LMMessage(selectModel.toString(), response);
 
         System.out.println(output.getModel() + " " + output.getMessage());
